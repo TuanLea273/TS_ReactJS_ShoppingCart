@@ -28,7 +28,7 @@ const App = () => {
     "products",
     getProducts
   );
-  console.log(data);
+  // console.log(data);
 
   const getTotalItems = (items: CartItemType[]) =>
     items.reduce((ack: number, item) => ack + item.amount, 0);
@@ -48,7 +48,22 @@ const App = () => {
       return [...prev, { ...clickedItem, amount: 1 }];
     });
   };
-  const handleRemoveFromCart = () => null;
+
+  const handleRemoveFromCart = (id: number) => {
+    setCartItems((prev) =>
+      prev.reduce((ack, item) => {
+        console.log(ack);
+        console.log(item);
+
+        if (item.id === id) {
+          if (item.amount === 1) return ack;
+          return [...ack, { ...item, amount: item.amount - 1 }];
+        } else {
+          return [...ack, item];
+        }
+      }, [] as CartItemType[])
+    );
+  };
 
   if (isLoading) return <LinearProgress />;
   if (error) return <div>Something went wrong ...</div>;
